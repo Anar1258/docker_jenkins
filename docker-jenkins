@@ -25,7 +25,7 @@ node
     {
          sshagent(['ssh_docker']) {
              
-        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.167.154 docker service create --name java-web-app -p 8080:8080 anjalisreedhar/javawebapp:${buildnumber}"
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.215.126 docker service create --name java-web-app -p 8080:8080 anjalisreedhar/javawebapp:${buildnumber}"
         }
     }
 }
