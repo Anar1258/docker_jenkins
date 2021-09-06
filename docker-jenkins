@@ -1,0 +1,31 @@
+node
+{
+    def buildnumber = BUILD_NUMBER
+    stage("git clone")
+    {
+        git credentialsId: 'git', url: 'https://github.com/Anar1258/java-web-app-docker.git'
+    }
+    stage("build package")
+    {
+        sh "mvn clean package"
+    }
+    stage("image create")
+    {
+        sh "docker build -t anjalisreedhar/javawebapp:${buildnumber} ."
+    }
+    stage("image login and push")
+    {
+        withCredentials([string(credentialsId: 'Docker_Hub_Pwd', variable: 'dockerhub_pwd')]) {
+            
+            sh "docker login -u anjalisreedhar -p ${dockerhub_pwd}"
+        }   
+        sh "docker push anjalisreedhar/javawebapp:${buildnumber}"
+    }
+    stage("docker service")
+    {
+         sshagent(['ssh_docker']) {
+             
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.167.154 docker service create --name java-web-app -p 8080:8080 anjalisreedhar/javawebapp:${buildnumber}"
+        }
+    }
+}
