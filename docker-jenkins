@@ -5,7 +5,7 @@ node
     {
         git credentialsId: 'git', url: 'https://github.com/Anar1258/java-web-app-docker.git'
     }
-    stage("build maven package")
+    stage("build package")
     {
         sh "mvn clean package"
     }
